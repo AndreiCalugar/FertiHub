@@ -87,9 +87,53 @@ export function AddQuoteDialog({ inquiryId, suppliers }: AddQuoteDialogProps) {
           inquiry_id: inquiryId,
           is_read: false,
         })
+
+        // Send email notification
+        await fetch('/api/notifications/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            type: 'quote_received',
+            data: {
+              supplierName: supplierData.name,
+              productName: formData.product_name,
+              totalPrice: parseFloat(formData.total_price).toLocaleString(),
+              currency: formData.currency,
+              inquiryId,
+            },
+          }),
+        })
       }
 
       toast.success('Quote added successfully')
+      
+      // Check if all quotes received
+      const completionResponse = await fetch('/api/quotes/check-completion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inquiryId }),
+      })
+
+      const completionData = await completionResponse.json()
+      
+      // If all quotes received, send email notification
+      if (completionData.allQuotesReceived && user) {
+        await fetch('/api/notifications/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            type: 'all_quotes_received',
+            data: {
+              productName: formData.product_name,
+              totalQuotes: completionData.quotesReceived,
+              inquiryId,
+            },
+          }),
+        })
+      }
+
       setOpen(false)
       resetForm()
       router.refresh()

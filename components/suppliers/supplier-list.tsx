@@ -1,20 +1,45 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Supplier } from '@/lib/types/database.types'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Trash2, Mail, Phone, Globe, Users } from 'lucide-react'
+import { Edit, Trash2, Mail, Phone, Globe, Users, Star } from 'lucide-react'
 import Link from 'next/link'
 import { SupplierDeleteDialog } from './supplier-delete-dialog'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 
 interface SupplierListProps {
   suppliers: Supplier[]
 }
 
 export function SupplierList({ suppliers }: SupplierListProps) {
+  const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [togglingFavorite, setTogglingFavorite] = useState<string | null>(null)
+
+  const toggleFavorite = async (supplierId: string, currentStatus: boolean) => {
+    setTogglingFavorite(supplierId)
+    const supabase = createClient()
+
+    const { error } = await supabase
+      .from('suppliers')
+      .update({ is_favorite: !currentStatus })
+      .eq('id', supplierId)
+
+    if (error) {
+      console.error('Error toggling favorite:', error)
+      toast.error('Failed to update favorite')
+    } else {
+      toast.success(currentStatus ? 'Removed from favorites' : 'Added to favorites')
+      router.refresh()
+    }
+
+    setTogglingFavorite(null)
+  }
 
   if (!suppliers || suppliers.length === 0) {
     return (
@@ -48,6 +73,19 @@ export function SupplierList({ suppliers }: SupplierListProps) {
               <TableRow key={supplier.id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => toggleFavorite(supplier.id, supplier.is_favorite)}
+                      disabled={togglingFavorite === supplier.id}
+                      className="focus:outline-none disabled:opacity-50"
+                    >
+                      <Star
+                        className={`h-5 w-5 ${
+                          supplier.is_favorite
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300 hover:text-yellow-400'
+                        } transition-colors`}
+                      />
+                    </button>
                     {supplier.name}
                     {supplier.website && (
                       <a

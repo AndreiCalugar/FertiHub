@@ -11,6 +11,7 @@ export interface InquiryEmailData {
   notes?: string
   inquiryId: string
   replyEmail: string
+  attachmentUrl?: string
 }
 
 export interface FollowUpEmailData {
@@ -96,6 +97,22 @@ export function getInquiryEmailTemplate(data: InquiryEmailData): { subject: stri
         ` : ''}
       </table>
     </div>
+    
+    ${data.attachmentUrl ? `
+    <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0284c7;">
+      <p style="margin: 0 0 10px 0; font-weight: bold; color: #0c4a6e;">📎 Attachment Included</p>
+      <p style="margin: 0;">
+        <a href="${data.attachmentUrl}" 
+           style="color: #0284c7; text-decoration: underline;"
+           target="_blank">
+          Download Specification Document
+        </a>
+      </p>
+      <p style="margin: 10px 0 0 0; font-size: 12px; color: #64748b;">
+        Click the link above to view the detailed specifications and requirements.
+      </p>
+    </div>
+    ` : ''}
     
     <p><strong>Please provide the following information in your quotation:</strong></p>
     <ul style="line-height: 1.8;">

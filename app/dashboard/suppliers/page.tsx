@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Link from 'next/link'
-import { Plus } from 'lucide-react'
+import { Plus, Star } from 'lucide-react'
 import { SupplierList } from '@/components/suppliers/supplier-list'
 
 export default async function SuppliersPage() {
@@ -13,7 +14,11 @@ export default async function SuppliersPage() {
     .from('suppliers')
     .select('*')
     .eq('created_by', user!.id)
-    .order('created_at', { ascending: false })
+    .order('is_favorite', { ascending: false })
+    .order('name', { ascending: true })
+
+  const favorites = suppliers?.filter(s => s.is_favorite) || []
+  const allSuppliers = suppliers || []
 
   return (
     <div className="p-8 space-y-6">
@@ -30,17 +35,45 @@ export default async function SuppliersPage() {
         </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Suppliers</CardTitle>
-          <CardDescription>
-            {suppliers?.length || 0} supplier{suppliers?.length !== 1 ? 's' : ''} in your network
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SupplierList suppliers={suppliers || []} />
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList>
+          <TabsTrigger value="all">
+            All Suppliers ({allSuppliers.length})
+          </TabsTrigger>
+          <TabsTrigger value="favorites">
+            <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
+            Favorites ({favorites.length})
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all">
+          <Card>
+            <CardHeader>
+              <CardTitle>All Suppliers</CardTitle>
+              <CardDescription>
+                {allSuppliers.length} supplier{allSuppliers.length !== 1 ? 's' : ''} in your network
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SupplierList suppliers={allSuppliers} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="favorites">
+          <Card>
+            <CardHeader>
+              <CardTitle>Favorite Suppliers</CardTitle>
+              <CardDescription>
+                {favorites.length} favorite{favorites.length !== 1 ? 's' : ''}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SupplierList suppliers={favorites} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

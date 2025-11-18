@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { ChevronLeft, Mail, Clock, Package, AlertCircle } from 'lucide-react'
+import { ChevronLeft, Mail, Clock, Package, AlertCircle, Paperclip, Download, Calendar } from 'lucide-react'
 import { InquirySupplierStatus } from '@/components/inquiries/inquiry-supplier-status'
 import { QuoteComparison } from '@/components/quotes/quote-comparison'
 import { AddQuoteDialog } from '@/components/quotes/add-quote-dialog'
@@ -125,6 +125,46 @@ export default async function InquiryDetailPage({
             <div>
               <p className="text-sm text-gray-600 mb-2">Additional Notes</p>
               <p className="text-gray-900">{inquiry.notes}</p>
+            </div>
+          )}
+
+          {inquiry.attachment_url && (
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Attachment</p>
+              <a
+                href={inquiry.attachment_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <Paperclip className="h-4 w-4" />
+                <span className="text-sm font-medium">View Specification Document</span>
+                <Download className="h-4 w-4" />
+              </a>
+            </div>
+          )}
+
+          {inquiry.deadline_date && (
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Response Deadline</p>
+              <div className="flex items-center gap-2 text-gray-900">
+                <Calendar className="h-4 w-4 text-orange-500" />
+                <span className="font-medium">
+                  {new Date(inquiry.deadline_date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </span>
+                {new Date(inquiry.deadline_date) < new Date() && (
+                  <Badge variant="destructive" className="ml-2">Overdue</Badge>
+                )}
+                {new Date(inquiry.deadline_date) > new Date() && 
+                 new Date(inquiry.deadline_date).getTime() - new Date().getTime() < 2 * 24 * 60 * 60 * 1000 && (
+                  <Badge className="ml-2 bg-orange-500">Approaching</Badge>
+                )}
+              </div>
             </div>
           )}
         </CardContent>

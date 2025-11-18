@@ -73,6 +73,7 @@ export async function POST(request: NextRequest) {
         notes: inquiry.notes,
         inquiryId: inquiry.id,
         replyEmail: user.email || 'noreply@fertihub.ai',
+        attachmentUrl: inquiry.attachment_url,
       }
 
       // Generate email template

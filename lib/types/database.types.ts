@@ -5,7 +5,7 @@ export type OrganizationType = 'lab' | 'clinic' | 'hospital'
 export type UserRole = 'admin' | 'lab_manager' | 'technician'
 export type InquiryStatus = 'draft' | 'sent' | 'partial' | 'completed' | 'expired'
 export type EmailStatus = 'pending' | 'sent' | 'delivered' | 'failed'
-export type NotificationType = 'quote_received' | 'all_quotes_received' | 'inquiry_deadline' | 'follow_up_sent'
+export type NotificationType = 'quote_received' | 'all_quotes_received' | 'inquiry_deadline' | 'follow_up_sent' | 'deadline_reminder'
 
 export interface UserProfile {
   id: string
@@ -25,6 +25,7 @@ export interface Supplier {
   phone: string | null
   website: string | null
   is_verified: boolean
+  is_favorite: boolean
   notes: string | null
   created_by: string | null
   created_at: string
@@ -48,9 +49,9 @@ export interface Inquiry {
   status: InquiryStatus
   notes: string | null
   attachment_url: string | null
+  deadline_date: string | null
   created_at: string
   updated_at: string
-  deadline: string | null
 }
 
 export interface InquirySupplier {

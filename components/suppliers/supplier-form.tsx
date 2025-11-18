@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 
 interface SupplierFormProps {
@@ -27,6 +28,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
     phone: supplier?.phone || '',
     website: supplier?.website || '',
     notes: supplier?.notes || '',
+    is_favorite: supplier?.is_favorite || false,
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,6 +56,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
             phone: formData.phone || null,
             website: formData.website || null,
             notes: formData.notes || null,
+            is_favorite: formData.is_favorite,
           })
           .eq('id', supplier.id)
 
@@ -70,6 +73,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
             phone: formData.phone || null,
             website: formData.website || null,
             notes: formData.notes || null,
+            is_favorite: formData.is_favorite,
             created_by: user.id,
           })
 
@@ -169,6 +173,23 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           rows={4}
           disabled={loading}
         />
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="is_favorite"
+          checked={formData.is_favorite}
+          onCheckedChange={(checked) =>
+            setFormData({ ...formData, is_favorite: checked as boolean })
+          }
+          disabled={loading}
+        />
+        <Label
+          htmlFor="is_favorite"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+        >
+          Mark as favorite supplier
+        </Label>
       </div>
 
       <div className="flex justify-end gap-4">

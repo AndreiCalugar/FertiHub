@@ -31,7 +31,10 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
     quantity: 1,
     urgency_level: 3,
     notes: '',
+    deadline_date: '',
   })
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   const toggleSupplier = (supplierId: string) => {
     setSelectedSuppliers((prev) =>
@@ -69,6 +72,30 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
         return
       }
 
+      let attachmentUrl = null
+
+      // Upload attachment if provided
+      if (attachmentFile) {
+        setUploading(true)
+        const fileExt = attachmentFile.name.split('.').pop()
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`
+        
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('inquiry-attachments')
+          .upload(fileName, attachmentFile)
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError)
+          toast.error('Failed to upload attachment')
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from('inquiry-attachments')
+            .getPublicUrl(fileName)
+          attachmentUrl = publicUrl
+        }
+        setUploading(false)
+      }
+
       // Create inquiry
       const { data: inquiry, error: inquiryError } = await supabase
         .from('inquiries')
@@ -79,6 +106,8 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
           quantity: formData.quantity,
           urgency_level: formData.urgency_level,
           notes: formData.notes || null,
+          attachment_url: attachmentUrl,
+          deadline_date: formData.deadline_date || null,
           status: 'draft',
         })
         .select()
@@ -234,6 +263,40 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
             disabled={loading}
           />
         </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="attachment">Attachment (Optional)</Label>
+          <Input
+            id="attachment"
+            type="file"
+            onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)}
+            disabled={loading || uploading}
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+          />
+          <p className="text-xs text-gray-500">
+            Upload spec sheets, requirements, or product images (Max 10MB)
+          </p>
+          {attachmentFile && (
+            <p className="text-sm text-green-600">
+              Selected: {attachmentFile.name} ({(attachmentFile.size / 1024 / 1024).toFixed(2)} MB)
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="deadline_date">Response Deadline (Optional)</Label>
+          <Input
+            id="deadline_date"
+            type="date"
+            value={formData.deadline_date}
+            onChange={(e) => setFormData({ ...formData, deadline_date: e.target.value })}
+            disabled={loading}
+            min={new Date().toISOString().split('T')[0]}
+          />
+          <p className="text-xs text-gray-500">
+            Set a deadline for suppliers to respond. You'll receive reminders as it approaches.
+          </p>
+        </div>
       </div>
 
       <Separator />
@@ -290,8 +353,8 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
         >
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Creating...' : 'Create & Send Inquiry'}
+        <Button type="submit" disabled={loading || uploading}>
+          {uploading ? 'Uploading file...' : loading ? 'Creating...' : 'Create & Send Inquiry'}
         </Button>
       </div>
     </form>
