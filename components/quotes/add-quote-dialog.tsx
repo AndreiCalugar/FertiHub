@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Plus } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface AddQuoteDialogProps {
   inquiryId: string
@@ -71,11 +72,30 @@ export function AddQuoteDialog({ inquiryId, suppliers }: AddQuoteDialogProps) {
 
       if (insertError) throw insertError
 
+      // Get supplier name for notification
+      const supplier = formData.supplier_id
+      const supplierData = suppliers.find(s => s.id === supplier)
+      
+      // Create notification
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user && supplierData) {
+        await supabase.from('notifications').insert({
+          user_id: user.id,
+          type: 'quote_received',
+          title: 'New Quote Received',
+          message: `${supplierData.name} has submitted a quote for ${formData.currency} ${parseFloat(formData.total_price).toLocaleString()}`,
+          inquiry_id: inquiryId,
+          is_read: false,
+        })
+      }
+
+      toast.success('Quote added successfully')
       setOpen(false)
       resetForm()
       router.refresh()
     } catch (err: any) {
       setError(err.message || 'An error occurred')
+      toast.error('Failed to add quote')
     } finally {
       setLoading(false)
     }

@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 
 interface SupplierDeleteDialogProps {
   supplierId: string | null
@@ -41,9 +42,9 @@ export function SupplierDeleteDialog({
 
     if (error) {
       console.error('Error deleting supplier:', error)
-      // Simple alert since toast might not be available
-      alert('Failed to delete supplier')
+      toast.error('Failed to delete supplier')
     } else {
+      toast.success('Supplier deleted successfully')
       onOpenChange(false)
       router.refresh()
     }

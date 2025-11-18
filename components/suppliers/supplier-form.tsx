@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { toast } from 'sonner'
 
 interface SupplierFormProps {
   supplier?: Supplier
@@ -57,6 +58,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           .eq('id', supplier.id)
 
         if (updateError) throw updateError
+        toast.success('Supplier updated successfully')
       } else {
         // Create new supplier
         const { error: insertError } = await supabase
@@ -72,12 +74,14 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           })
 
         if (insertError) throw insertError
+        toast.success('Supplier added successfully')
       }
 
       router.push('/dashboard/suppliers')
       router.refresh()
     } catch (err: any) {
       setError(err.message || 'An error occurred')
+      toast.error('Failed to save supplier')
     } finally {
       setLoading(false)
     }

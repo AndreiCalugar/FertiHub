@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Download, TrendingDown } from 'lucide-react'
 import * as XLSX from 'xlsx'
+import { QuoteActions } from './quote-actions'
 
 interface QuoteComparisonProps {
   quotes: any[]
@@ -102,6 +103,7 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
               <TableHead>Lead Time</TableHead>
               <TableHead>Validity</TableHead>
               <TableHead>Notes</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -136,6 +138,9 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {quote.notes || '-'}
                     </p>
+                  </TableCell>
+                  <TableCell>
+                    <QuoteActions quoteId={quote.id} />
                   </TableCell>
                 </TableRow>
               )

@@ -1,7 +1,5 @@
 'use client'
 
-import { Bell } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -11,17 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { NotificationDropdown } from '@/components/notifications/notification-dropdown'
 
 interface HeaderProps {
   user: {
+    id: string
     email?: string
     name?: string
   }
   organizationName?: string
+  notifications?: any[]
+  unreadCount?: number
 }
 
-export function Header({ user, organizationName }: HeaderProps) {
+export function Header({ user, organizationName, notifications = [], unreadCount = 0 }: HeaderProps) {
   const initials = user.name 
     ? user.name.split(' ').map(n => n[0]).join('').toUpperCase()
     : user.email?.[0].toUpperCase() || 'U'
@@ -37,15 +39,11 @@ export function Header({ user, organizationName }: HeaderProps) {
 
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <Badge 
-            variant="destructive" 
-            className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-          >
-            0
-          </Badge>
-        </Button>
+        <NotificationDropdown
+          userId={user.id}
+          initialNotifications={notifications}
+          initialUnreadCount={unreadCount}
+        />
 
         {/* User Menu */}
         <DropdownMenu>

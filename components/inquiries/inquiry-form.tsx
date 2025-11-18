@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import { toast } from 'sonner'
 
 interface InquiryFormProps {
   suppliers: any[]
@@ -107,12 +108,16 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
 
       if (!response.ok) {
         console.error('Failed to send emails')
+        toast.warning('Inquiry created but some emails failed to send')
+      } else {
+        toast.success('Inquiry created and emails sent successfully!')
       }
 
       router.push(`/dashboard/inquiries/${inquiry.id}`)
       router.refresh()
     } catch (err: any) {
       setError(err.message || 'An error occurred')
+      toast.error('Failed to create inquiry')
       setLoading(false)
     }
   }

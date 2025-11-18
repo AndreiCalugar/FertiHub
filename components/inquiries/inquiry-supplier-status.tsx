@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, Clock, XCircle, Mail } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface InquirySupplierStatusProps {
   inquiryId: string
@@ -35,10 +36,11 @@ export function InquirySupplierStatus({
         throw new Error('Failed to send follow-up')
       }
 
+      toast.success('Follow-up email sent successfully')
       router.refresh()
     } catch (error) {
       console.error('Error sending follow-up:', error)
-      alert('Failed to send follow-up email')
+      toast.error('Failed to send follow-up email')
     } finally {
       setLoadingId(null)
     }
