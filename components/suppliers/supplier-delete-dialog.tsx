@@ -13,7 +13,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { createClient } from '@/lib/supabase/client'
-import { toast } from 'sonner'
 
 interface SupplierDeleteDialogProps {
   supplierId: string | null
