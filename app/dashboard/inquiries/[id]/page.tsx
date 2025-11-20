@@ -4,10 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { ChevronLeft, Mail, Clock, Package, AlertCircle, Paperclip, Download, Calendar } from 'lucide-react'
+import { ChevronLeft, Mail, Clock, Package, AlertCircle, Paperclip, Download, Calendar, Trash2 } from 'lucide-react'
 import { InquirySupplierStatus } from '@/components/inquiries/inquiry-supplier-status'
 import { QuoteComparison } from '@/components/quotes/quote-comparison'
 import { AddQuoteDialog } from '@/components/quotes/add-quote-dialog'
+import { InquiryDeleteButton } from '@/components/inquiries/inquiry-delete-button'
 
 export default async function InquiryDetailPage({
   params,
@@ -73,9 +74,15 @@ export default async function InquiryDetailPage({
               Created on {new Date(inquiry.created_at).toLocaleDateString()}
             </p>
           </div>
-          <Badge className={getStatusColor(inquiry.status)}>
-            {inquiry.status}
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Badge className={getStatusColor(inquiry.status)}>
+              {inquiry.status}
+            </Badge>
+            <InquiryDeleteButton 
+              inquiryId={inquiry.id} 
+              productDescription={inquiry.product_description}
+            />
+          </div>
         </div>
       </div>
 

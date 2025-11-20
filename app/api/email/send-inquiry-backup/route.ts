@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       const supplier = inquirySupplier.supplier as any
 
       if (!supplier?.email) {
-        errors.push({ supplierId: supplier.id, error: 'No email address' })
+        errors.push({ supplierId: supplier?.id, error: 'No email address' })
         continue
       }
 

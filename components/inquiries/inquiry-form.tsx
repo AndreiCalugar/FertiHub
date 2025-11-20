@@ -129,7 +129,7 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
       if (suppliersError) throw suppliersError
 
       // Send emails
-      const response = await fetch('/api/email/send-inquiry', {
+      const response = await fetch('/api/send-inquiry-emails', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inquiryId: inquiry.id }),
