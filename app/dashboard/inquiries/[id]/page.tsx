@@ -8,6 +8,7 @@ import { ChevronLeft, Mail, Clock, Package, AlertCircle, Paperclip, Download, Ca
 import { InquirySupplierStatus } from '@/components/inquiries/inquiry-supplier-status'
 import { QuoteComparison } from '@/components/quotes/quote-comparison'
 import { AddQuoteDialog } from '@/components/quotes/add-quote-dialog'
+import { AiQuoteDialog } from '@/components/quotes/ai-quote-dialog'
 import { InquiryDeleteButton } from '@/components/inquiries/inquiry-delete-button'
 
 export default async function InquiryDetailPage({
@@ -203,14 +204,24 @@ export default async function InquiryDetailPage({
               {quotes?.length || 0} quote{quotes?.length !== 1 ? 's' : ''} received
             </CardDescription>
           </div>
-          <AddQuoteDialog
-            inquiryId={inquiry.id}
-            suppliers={inquiry.inquiry_suppliers?.map((is: any) => is.supplier) || []}
-          />
+          <div className="flex flex-col sm:flex-row gap-2">
+            <AiQuoteDialog
+              inquiryId={inquiry.id}
+              suppliers={inquiry.inquiry_suppliers?.map((is: any) => is.supplier) || []}
+            />
+            <AddQuoteDialog
+              inquiryId={inquiry.id}
+              suppliers={inquiry.inquiry_suppliers?.map((is: any) => is.supplier) || []}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           {quotes && quotes.length > 0 ? (
-            <QuoteComparison quotes={quotes} inquiryId={inquiry.id} />
+            <QuoteComparison 
+              quotes={quotes} 
+              inquiryId={inquiry.id}
+              suppliers={inquiry.inquiry_suppliers?.map((is: any) => is.supplier) || []}
+            />
           ) : (
             <div className="text-center py-12 text-gray-500">
               <Package className="h-16 w-16 mx-auto mb-4 text-gray-400" />

@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { ProfileForm } from '@/components/settings/profile-form'
+import { PasswordChange } from '@/components/settings/password-change'
+import { NotificationPreferences } from '@/components/settings/notification-preferences'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -11,6 +14,13 @@ export default async function SettingsPage() {
     .select('*')
     .eq('id', user!.id)
     .single()
+
+  const notificationPreferences = profile?.notification_preferences || {
+    email_notifications: true,
+    quote_received_email: true,
+    inquiry_updates_email: true,
+    system_notifications: true,
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
@@ -23,7 +33,7 @@ export default async function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Account Information</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">Your account and organization details</CardDescription>
+          <CardDescription className="text-xs sm:text-sm">Your account details</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 sm:space-y-4">
           <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
@@ -41,35 +51,19 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Organization Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Organization Details</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">Information about your organization</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 sm:space-y-4">
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600">Organization Name</p>
-              <p className="font-medium text-sm sm:text-base">{profile?.organization_name}</p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600">Organization Type</p>
-              <p className="font-medium text-sm sm:text-base capitalize">{profile?.organization_type}</p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600">Location</p>
-              <p className="font-medium text-sm sm:text-base">{profile?.location || 'Not specified'}</p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600">Your Role</p>
-              <Badge variant="secondary" className="capitalize text-xs">
-                {profile?.role}
-              </Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Organization Details - Now Editable */}
+      <ProfileForm profile={{
+        organization_name: profile!.organization_name,
+        organization_type: profile!.organization_type as 'lab' | 'clinic' | 'hospital',
+        location: profile!.location,
+        role: profile!.role as 'admin' | 'lab_manager' | 'technician',
+      }} />
+
+      {/* Password Change */}
+      <PasswordChange />
+
+      {/* Notification Preferences */}
+      <NotificationPreferences preferences={notificationPreferences} />
 
       {/* Environment Variables Status */}
       <Card>

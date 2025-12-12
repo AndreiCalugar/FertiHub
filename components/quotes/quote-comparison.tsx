@@ -11,9 +11,10 @@ import { QuoteActions } from './quote-actions'
 interface QuoteComparisonProps {
   quotes: any[]
   inquiryId: string
+  suppliers: any[]
 }
 
-export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
+export function QuoteComparison({ quotes, inquiryId, suppliers }: QuoteComparisonProps) {
   const [exporting, setExporting] = useState(false)
 
   if (!quotes || quotes.length === 0) {
@@ -148,7 +149,7 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
               </div>
               
               <div className="pt-2">
-                <QuoteActions quoteId={quote.id} />
+                <QuoteActions quoteId={quote.id} inquiryId={inquiryId} suppliers={suppliers} />
               </div>
             </div>
           )
@@ -204,7 +205,7 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
                     </p>
                   </TableCell>
                   <TableCell>
-                    <QuoteActions quoteId={quote.id} />
+                    <QuoteActions quoteId={quote.id} inquiryId={inquiryId} suppliers={suppliers} />
                   </TableCell>
                 </TableRow>
               )
