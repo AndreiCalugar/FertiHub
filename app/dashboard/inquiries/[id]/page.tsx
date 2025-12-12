@@ -59,22 +59,22 @@ export default async function InquiryDetailPage({
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
       <div>
-        <Button variant="ghost" asChild className="mb-4">
+        <Button variant="ghost" asChild className="mb-3 sm:mb-4 -ml-2" size="sm">
           <Link href="/dashboard/inquiries">
             <ChevronLeft className="mr-2 h-4 w-4" />
             Back to Inquiries
           </Link>
         </Button>
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Inquiry Details</h1>
-            <p className="text-gray-600 mt-1">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold">Inquiry Details</h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
               Created on {new Date(inquiry.created_at).toLocaleDateString()}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <Badge className={getStatusColor(inquiry.status)}>
               {inquiry.status}
             </Badge>
@@ -91,22 +91,22 @@ export default async function InquiryDetailPage({
         <CardHeader>
           <CardTitle>Product Information</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <CardContent className="space-y-3 sm:space-y-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             <div>
-              <p className="text-sm text-gray-600">Category</p>
-              <p className="font-medium">
+              <p className="text-xs sm:text-sm text-gray-600">Category</p>
+              <p className="font-medium text-sm sm:text-base">
                 {inquiry.product_category?.name || 'Not specified'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Quantity</p>
-              <p className="font-medium">{inquiry.quantity}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Quantity</p>
+              <p className="font-medium text-sm sm:text-base">{inquiry.quantity}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Urgency Level</p>
+              <p className="text-xs sm:text-sm text-gray-600">Urgency Level</p>
               <p className="font-medium">
-                <span className={`px-2 py-1 rounded text-sm ${
+                <span className={`px-2 py-1 rounded text-xs sm:text-sm ${
                   inquiry.urgency_level >= 4
                     ? 'bg-red-100 text-red-700'
                     : inquiry.urgency_level === 3
@@ -118,45 +118,45 @@ export default async function InquiryDetailPage({
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Status</p>
-              <p className="font-medium capitalize">{inquiry.status}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Status</p>
+              <p className="font-medium text-sm sm:text-base capitalize">{inquiry.status}</p>
             </div>
           </div>
 
           <div>
-            <p className="text-sm text-gray-600 mb-2">Description</p>
-            <p className="text-gray-900">{inquiry.product_description}</p>
+            <p className="text-xs sm:text-sm text-gray-600 mb-2">Description</p>
+            <p className="text-sm sm:text-base text-gray-900">{inquiry.product_description}</p>
           </div>
 
           {inquiry.notes && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">Additional Notes</p>
-              <p className="text-gray-900">{inquiry.notes}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-2">Additional Notes</p>
+              <p className="text-sm sm:text-base text-gray-900">{inquiry.notes}</p>
             </div>
           )}
 
           {inquiry.attachment_url && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">Attachment</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-2">Attachment</p>
               <a
                 href={inquiry.attachment_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm"
               >
-                <Paperclip className="h-4 w-4" />
-                <span className="text-sm font-medium">View Specification Document</span>
-                <Download className="h-4 w-4" />
+                <Paperclip className="h-4 w-4 flex-shrink-0" />
+                <span className="font-medium">View Document</span>
+                <Download className="h-4 w-4 flex-shrink-0" />
               </a>
             </div>
           )}
 
           {inquiry.deadline_date && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">Response Deadline</p>
-              <div className="flex items-center gap-2 text-gray-900">
-                <Calendar className="h-4 w-4 text-orange-500" />
-                <span className="font-medium">
+              <p className="text-xs sm:text-sm text-gray-600 mb-2">Response Deadline</p>
+              <div className="flex flex-wrap items-center gap-2 text-gray-900">
+                <Calendar className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                <span className="font-medium text-sm sm:text-base">
                   {new Date(inquiry.deadline_date).toLocaleDateString('en-US', {
                     weekday: 'short',
                     year: 'numeric',
@@ -165,11 +165,11 @@ export default async function InquiryDetailPage({
                   })}
                 </span>
                 {new Date(inquiry.deadline_date) < new Date() && (
-                  <Badge variant="destructive" className="ml-2">Overdue</Badge>
+                  <Badge variant="destructive" className="text-xs">Overdue</Badge>
                 )}
                 {new Date(inquiry.deadline_date) > new Date() && 
                  new Date(inquiry.deadline_date).getTime() - new Date().getTime() < 2 * 24 * 60 * 60 * 1000 && (
-                  <Badge className="ml-2 bg-orange-500">Approaching</Badge>
+                  <Badge className="bg-orange-500 text-xs">Approaching</Badge>
                 )}
               </div>
             </div>
@@ -196,10 +196,10 @@ export default async function InquiryDetailPage({
 
       {/* Quotes Comparison */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
           <div>
-            <CardTitle>Quotes Received</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-lg sm:text-xl">Quotes Received</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
               {quotes?.length || 0} quote{quotes?.length !== 1 ? 's' : ''} received
             </CardDescription>
           </div>

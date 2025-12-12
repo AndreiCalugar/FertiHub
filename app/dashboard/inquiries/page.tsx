@@ -23,13 +23,13 @@ export default async function InquiriesPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Inquiries</h1>
-          <p className="text-gray-600 mt-1">Manage your quote requests</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Inquiries</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your quote requests</p>
         </div>
-        <Button asChild>
+        <Button asChild size="sm" className="sm:size-default self-start sm:self-auto">
           <Link href="/dashboard/inquiries/new">
             <Plus className="mr-2 h-4 w-4" />
             Create Inquiry

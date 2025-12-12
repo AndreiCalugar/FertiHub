@@ -13,27 +13,27 @@ export default async function SettingsPage() {
     .single()
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-gray-600 mt-1">Manage your account and preferences</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Settings</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your account and preferences</p>
       </div>
 
       {/* Account Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Account Information</CardTitle>
-          <CardDescription>Your account and organization details</CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Account Information</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Your account and organization details</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <CardContent className="space-y-3 sm:space-y-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             <div>
-              <p className="text-sm text-gray-600">Email</p>
-              <p className="font-medium">{user?.email}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Email</p>
+              <p className="font-medium text-sm sm:text-base truncate">{user?.email}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Account Created</p>
-              <p className="font-medium">
+              <p className="text-xs sm:text-sm text-gray-600">Account Created</p>
+              <p className="font-medium text-sm sm:text-base">
                 {new Date(user!.created_at).toLocaleDateString()}
               </p>
             </div>
@@ -44,26 +44,26 @@ export default async function SettingsPage() {
       {/* Organization Details */}
       <Card>
         <CardHeader>
-          <CardTitle>Organization Details</CardTitle>
-          <CardDescription>Information about your organization</CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Organization Details</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Information about your organization</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <CardContent className="space-y-3 sm:space-y-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             <div>
-              <p className="text-sm text-gray-600">Organization Name</p>
-              <p className="font-medium">{profile?.organization_name}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Organization Name</p>
+              <p className="font-medium text-sm sm:text-base">{profile?.organization_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Organization Type</p>
-              <p className="font-medium capitalize">{profile?.organization_type}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Organization Type</p>
+              <p className="font-medium text-sm sm:text-base capitalize">{profile?.organization_type}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Location</p>
-              <p className="font-medium">{profile?.location || 'Not specified'}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Location</p>
+              <p className="font-medium text-sm sm:text-base">{profile?.location || 'Not specified'}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Your Role</p>
-              <Badge variant="secondary" className="capitalize">
+              <p className="text-xs sm:text-sm text-gray-600">Your Role</p>
+              <Badge variant="secondary" className="capitalize text-xs">
                 {profile?.role}
               </Badge>
             </div>
@@ -74,23 +74,23 @@ export default async function SettingsPage() {
       {/* Environment Variables Status */}
       <Card>
         <CardHeader>
-          <CardTitle>Integration Status</CardTitle>
-          <CardDescription>Check if your services are configured</CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Integration Status</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Check if your services are configured</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="flex items-center justify-between p-3 border rounded-lg">
-            <div>
-              <p className="font-medium">Supabase</p>
-              <p className="text-sm text-gray-600">Database & Authentication</p>
+          <div className="flex items-center justify-between p-3 border rounded-lg gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm sm:text-base">Supabase</p>
+              <p className="text-xs sm:text-sm text-gray-600">Database & Authentication</p>
             </div>
-            <Badge variant="default" className="bg-green-600">Connected</Badge>
+            <Badge variant="default" className="bg-green-600 flex-shrink-0 text-xs">Connected</Badge>
           </div>
-          <div className="flex items-center justify-between p-3 border rounded-lg">
-            <div>
-              <p className="font-medium">SendGrid</p>
-              <p className="text-sm text-gray-600">Email Automation</p>
+          <div className="flex items-center justify-between p-3 border rounded-lg gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm sm:text-base">SendGrid</p>
+              <p className="text-xs sm:text-sm text-gray-600">Email Automation</p>
             </div>
-            <Badge variant="default" className="bg-green-600">Configured</Badge>
+            <Badge variant="default" className="bg-green-600 flex-shrink-0 text-xs">Configured</Badge>
           </div>
         </CardContent>
       </Card>
@@ -98,9 +98,9 @@ export default async function SettingsPage() {
       {/* Future Features Placeholder */}
       <Card className="bg-gray-50">
         <CardHeader>
-          <CardTitle>Coming Soon</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">Coming Soon</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-gray-600">
+        <CardContent className="space-y-2 text-xs sm:text-sm text-gray-600">
           <p>• Edit profile information</p>
           <p>• Change password</p>
           <p>• Email notification preferences</p>

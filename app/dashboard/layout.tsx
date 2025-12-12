@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Sidebar } from '@/components/dashboard/sidebar'
-import { Header } from '@/components/dashboard/header'
+import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { Toaster } from 'sonner'
 
 export default async function DashboardLayout({
@@ -44,21 +43,17 @@ export default async function DashboardLayout({
     .eq('is_read', false)
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <>
       <Toaster position="top-right" richColors />
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Header 
-          user={{ id: user.id, email: user.email, name: profile.organization_name }}
-          organizationName={profile.organization_name}
-          notifications={notifications || []}
-          unreadCount={unreadCount || 0}
-        />
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    </div>
+      <DashboardShell
+        user={{ id: user.id, email: user.email, name: profile.organization_name }}
+        organizationName={profile.organization_name}
+        notifications={notifications || []}
+        unreadCount={unreadCount || 0}
+      >
+        {children}
+      </DashboardShell>
+    </>
   )
 }
 

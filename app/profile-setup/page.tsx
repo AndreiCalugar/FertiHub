@@ -102,24 +102,24 @@ export default function ProfileSetupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4 sm:p-6">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle>Complete Your Profile</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl sm:text-2xl">Complete Your Profile</CardTitle>
+          <CardDescription className="text-sm">
             Tell us about your organization to get started with FertiHub
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6">
             {error && (
               <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription className="text-sm">{error}</AlertDescription>
               </Alert>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="organizationName">Organization Name *</Label>
+              <Label htmlFor="organizationName" className="text-sm">Organization Name *</Label>
               <Input
                 id="organizationName"
                 placeholder="e.g., City Fertility Clinic"
@@ -129,11 +129,12 @@ export default function ProfileSetupPage() {
                 }
                 required
                 disabled={submitting}
+                className="text-base"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="organizationType">Organization Type *</Label>
+              <Label htmlFor="organizationType" className="text-sm">Organization Type *</Label>
               <Select
                 value={formData.organizationType}
                 onValueChange={(value: 'lab' | 'clinic' | 'hospital') =>
@@ -153,7 +154,7 @@ export default function ProfileSetupPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location" className="text-sm">Location</Label>
               <Input
                 id="location"
                 placeholder="e.g., New York, USA"
@@ -162,12 +163,13 @@ export default function ProfileSetupPage() {
                   setFormData({ ...formData, location: e.target.value })
                 }
                 disabled={submitting}
+                className="text-base"
               />
               <p className="text-xs text-gray-500">City, Country</p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="role">Your Role *</Label>
+              <Label htmlFor="role" className="text-sm">Your Role *</Label>
               <Select
                 value={formData.role}
                 onValueChange={(value: 'admin' | 'lab_manager' | 'technician') =>
@@ -186,7 +188,7 @@ export default function ProfileSetupPage() {
               </Select>
             </div>
 
-            <Button type="submit" className="w-full" disabled={submitting}>
+            <Button type="submit" className="w-full" disabled={submitting} size="lg">
               {submitting ? 'Creating profile...' : 'Complete Setup'}
             </Button>
           </CardContent>

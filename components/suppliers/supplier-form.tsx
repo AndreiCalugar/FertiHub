@@ -92,15 +92,15 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {error && (
         <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription className="text-sm">{error}</AlertDescription>
         </Alert>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="name">Company Name *</Label>
+        <Label htmlFor="name" className="text-sm">Company Name *</Label>
         <Input
           id="name"
           value={formData.name}
@@ -108,11 +108,12 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           placeholder="e.g., Cooper Surgical"
           required
           disabled={loading}
+          className="text-base"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email Address *</Label>
+        <Label htmlFor="email" className="text-sm">Email Address *</Label>
         <Input
           id="email"
           type="email"
@@ -121,12 +122,13 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           placeholder="sales@example.com"
           required
           disabled={loading}
+          className="text-base"
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="contact_person">Contact Person</Label>
+          <Label htmlFor="contact_person" className="text-sm">Contact Person</Label>
           <Input
             id="contact_person"
             value={formData.contact_person}
@@ -135,11 +137,12 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
             }
             placeholder="John Doe"
             disabled={loading}
+            className="text-base"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label htmlFor="phone" className="text-sm">Phone Number</Label>
           <Input
             id="phone"
             type="tel"
@@ -147,12 +150,13 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             placeholder="+1 234 567 8900"
             disabled={loading}
+            className="text-base"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="website">Website</Label>
+        <Label htmlFor="website" className="text-sm">Website</Label>
         <Input
           id="website"
           type="url"
@@ -160,11 +164,12 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           onChange={(e) => setFormData({ ...formData, website: e.target.value })}
           placeholder="https://www.example.com"
           disabled={loading}
+          className="text-base"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="notes">Notes</Label>
+        <Label htmlFor="notes" className="text-sm">Notes</Label>
         <Textarea
           id="notes"
           value={formData.notes}
@@ -172,6 +177,7 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
           placeholder="Any additional information about this supplier..."
           rows={4}
           disabled={loading}
+          className="text-base"
         />
       </div>
 
@@ -192,16 +198,17 @@ export function SupplierForm({ supplier }: SupplierFormProps) {
         </Label>
       </div>
 
-      <div className="flex justify-end gap-4">
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:gap-4 pt-2">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.push('/dashboard/suppliers')}
           disabled={loading}
+          className="w-full sm:w-auto"
         >
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className="w-full sm:w-auto">
           {loading ? 'Saving...' : supplier ? 'Update Supplier' : 'Add Supplier'}
         </Button>
       </div>

@@ -165,16 +165,16 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {error && (
         <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription className="text-sm">{error}</AlertDescription>
         </Alert>
       )}
 
       {/* Product Details */}
-      <div className="space-y-4">
-        <h3 className="font-semibold">Product Information</h3>
+      <div className="space-y-3 sm:space-y-4">
+        <h3 className="font-semibold text-base sm:text-lg">Product Information</h3>
 
         <div className="space-y-2">
           <Label htmlFor="category">Product Category</Label>
@@ -213,9 +213,9 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
           />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="quantity">Quantity *</Label>
+            <Label htmlFor="quantity" className="text-sm">Quantity *</Label>
             <Input
               id="quantity"
               type="number"
@@ -226,11 +226,12 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
               }
               required
               disabled={loading}
+              className="text-base"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="urgency">Urgency Level *</Label>
+            <Label htmlFor="urgency" className="text-sm">Urgency Level *</Label>
             <Select
               value={formData.urgency_level.toString()}
               onValueChange={(value) =>
@@ -302,21 +303,22 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
       <Separator />
 
       {/* Supplier Selection */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold">Select Suppliers *</h3>
+      <div className="space-y-3 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <h3 className="font-semibold text-base sm:text-lg">Select Suppliers *</h3>
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={selectAllSuppliers}
             disabled={loading}
+            className="self-start"
           >
             {selectedSuppliers.length === suppliers.length ? 'Deselect All' : 'Select All'}
           </Button>
         </div>
 
-        <div className="space-y-3 max-h-64 overflow-y-auto border rounded-lg p-4">
+        <div className="space-y-3 max-h-64 overflow-y-auto border rounded-lg p-3 sm:p-4">
           {suppliers.map((supplier) => (
             <div key={supplier.id} className="flex items-start space-x-3">
               <Checkbox
@@ -324,37 +326,39 @@ export function InquiryForm({ suppliers, categories }: InquiryFormProps) {
                 checked={selectedSuppliers.includes(supplier.id)}
                 onCheckedChange={() => toggleSupplier(supplier.id)}
                 disabled={loading}
+                className="mt-0.5"
               />
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <label
                   htmlFor={supplier.id}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer block"
                 >
                   {supplier.name}
                 </label>
-                <p className="text-sm text-gray-600 mt-1">{supplier.email}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1 truncate">{supplier.email}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <p className="text-sm text-gray-600">
+        <p className="text-xs sm:text-sm text-gray-600">
           {selectedSuppliers.length} supplier{selectedSuppliers.length !== 1 ? 's' : ''}{' '}
           selected
         </p>
       </div>
 
-      <div className="flex justify-end gap-4 pt-4">
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:gap-4 pt-4">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.push('/dashboard/inquiries')}
           disabled={loading}
+          className="w-full sm:w-auto"
         >
           Cancel
         </Button>
-        <Button type="submit" disabled={loading || uploading}>
-          {uploading ? 'Uploading file...' : loading ? 'Creating...' : 'Create & Send Inquiry'}
+        <Button type="submit" disabled={loading || uploading} className="w-full sm:w-auto">
+          {uploading ? 'Uploading...' : loading ? 'Creating...' : 'Create & Send'}
         </Button>
       </div>
     </form>

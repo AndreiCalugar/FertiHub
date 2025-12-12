@@ -56,7 +56,92 @@ export function SupplierList({ suppliers }: SupplierListProps) {
 
   return (
     <>
-      <div className="rounded-md border">
+      {/* Mobile view - Cards */}
+      <div className="lg:hidden space-y-4">
+        {suppliers.map((supplier) => (
+          <div key={supplier.id} className="border rounded-lg p-4 space-y-3 bg-white">
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <button
+                  onClick={() => toggleFavorite(supplier.id, supplier.is_favorite)}
+                  disabled={togglingFavorite === supplier.id}
+                  className="focus:outline-none disabled:opacity-50 flex-shrink-0"
+                >
+                  <Star
+                    className={`h-5 w-5 ${
+                      supplier.is_favorite
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-300 hover:text-yellow-400'
+                    } transition-colors`}
+                  />
+                </button>
+                <h3 className="font-semibold text-base truncate">{supplier.name}</h3>
+              </div>
+              {supplier.is_verified ? (
+                <Badge variant="default" className="flex-shrink-0">Verified</Badge>
+              ) : (
+                <Badge variant="secondary" className="flex-shrink-0">Unverified</Badge>
+              )}
+            </div>
+            
+            <div className="space-y-2 text-sm">
+              {supplier.contact_person && (
+                <div>
+                  <span className="text-gray-500">Contact:</span>
+                  <p className="font-medium">{supplier.contact_person}</p>
+                </div>
+              )}
+              <a 
+                href={`mailto:${supplier.email}`} 
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+              >
+                <Mail className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">{supplier.email}</span>
+              </a>
+              {supplier.phone && (
+                <a 
+                  href={`tel:${supplier.phone}`} 
+                  className="flex items-center gap-2 text-gray-600 hover:text-gray-700"
+                >
+                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  {supplier.phone}
+                </a>
+              )}
+              {supplier.website && (
+                <a
+                  href={supplier.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700"
+                >
+                  <Globe className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Visit website</span>
+                </a>
+              )}
+            </div>
+            
+            <div className="flex gap-2 pt-2">
+              <Button variant="outline" size="sm" asChild className="flex-1">
+                <Link href={`/dashboard/suppliers/${supplier.id}/edit`}>
+                  <Edit className="h-4 w-4 mr-1" />
+                  Edit
+                </Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setDeleteId(supplier.id)}
+                className="flex-shrink-0"
+              >
+                <Trash2 className="h-4 w-4 text-red-600" />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop view - Table */}
+      <div className="hidden lg:block rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>

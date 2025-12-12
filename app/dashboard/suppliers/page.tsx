@@ -21,13 +21,13 @@ export default async function SuppliersPage() {
   const allSuppliers = suppliers || []
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Suppliers</h1>
-          <p className="text-gray-600 mt-1">Manage your supplier contacts</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Suppliers</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your supplier contacts</p>
         </div>
-        <Button asChild>
+        <Button asChild size="sm" className="sm:size-default self-start sm:self-auto">
           <Link href="/dashboard/suppliers/new">
             <Plus className="mr-2 h-4 w-4" />
             Add Supplier
@@ -36,13 +36,17 @@ export default async function SuppliersPage() {
       </div>
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList>
-          <TabsTrigger value="all">
-            All Suppliers ({allSuppliers.length})
+        <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-flex">
+          <TabsTrigger value="all" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">All Suppliers</span>
+            <span className="sm:hidden">All</span>
+            <span className="ml-1">({allSuppliers.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="favorites">
-            <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
-            Favorites ({favorites.length})
+          <TabsTrigger value="favorites" className="text-xs sm:text-sm">
+            <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 fill-yellow-400 text-yellow-400" />
+            <span className="hidden sm:inline">Favorites</span>
+            <span className="sm:hidden">Fav</span>
+            <span className="ml-1">({favorites.length})</span>
           </TabsTrigger>
         </TabsList>
 

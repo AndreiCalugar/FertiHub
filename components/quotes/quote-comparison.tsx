@@ -86,13 +86,77 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button variant="outline" onClick={exportToExcel} disabled={exporting}>
+        <Button variant="outline" onClick={exportToExcel} disabled={exporting} size="sm" className="lg:size-default">
           <Download className="mr-2 h-4 w-4" />
-          {exporting ? 'Exporting...' : 'Export to Excel'}
+          <span className="hidden sm:inline">{exporting ? 'Exporting...' : 'Export to Excel'}</span>
+          <span className="sm:hidden">Export</span>
         </Button>
       </div>
 
-      <div className="rounded-md border overflow-x-auto">
+      {/* Mobile view - Cards */}
+      <div className="lg:hidden space-y-4">
+        {quotes.map((quote) => {
+          const isLowestPrice = quote.total_price === lowestPrice
+          return (
+            <div 
+              key={quote.id} 
+              className={`border rounded-lg p-4 space-y-3 ${isLowestPrice ? 'bg-green-50 border-green-200' : 'bg-white'}`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-semibold text-base">{quote.supplier?.name || 'Unknown'}</h3>
+                {isLowestPrice && (
+                  <Badge variant="default" className="bg-green-600 flex-shrink-0">
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                    Lowest
+                  </Badge>
+                )}
+              </div>
+              
+              <div className="space-y-2 text-sm">
+                <div>
+                  <span className="text-gray-500 text-xs">Product</span>
+                  <p className="font-medium">{quote.product_name}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-gray-500 text-xs">Unit Price</span>
+                    <p className="font-medium">
+                      {quote.unit_price ? formatCurrency(quote.unit_price, quote.currency) : '-'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-xs">Total Price</span>
+                    <p className="font-semibold text-lg">
+                      {formatCurrency(quote.total_price, quote.currency)}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-xs">Lead Time</span>
+                    <p>{quote.lead_time_days ? `${quote.lead_time_days} days` : '-'}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-xs">Validity</span>
+                    <p>{quote.validity_period || '-'}</p>
+                  </div>
+                </div>
+                {quote.notes && (
+                  <div>
+                    <span className="text-gray-500 text-xs">Notes</span>
+                    <p className="text-gray-900 text-sm mt-1">{quote.notes}</p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="pt-2">
+                <QuoteActions quoteId={quote.id} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Desktop view - Table */}
+      <div className="hidden lg:block rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -149,14 +213,14 @@ export function QuoteComparison({ quotes, inquiryId }: QuoteComparisonProps) {
         </Table>
       </div>
 
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-600 bg-green-50 border border-green-200 rounded-lg p-3">
         <p>
-          Best offer:{' '}
+          <span className="font-medium">Best offer:</span>{' '}
           <span className="font-semibold text-green-700">
             {formatCurrency(lowestPrice, quotes.find((q) => q.total_price === lowestPrice)?.currency || 'USD')}
           </span>
           {' from '}
-          {quotes.find((q) => q.total_price === lowestPrice)?.supplier?.name}
+          <span className="font-medium">{quotes.find((q) => q.total_price === lowestPrice)?.supplier?.name}</span>
         </p>
       </div>
     </div>

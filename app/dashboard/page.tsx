@@ -35,9 +35,9 @@ export default async function DashboardPage() {
     .limit(5)
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
       {/* Stats Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Inquiries</CardTitle>
@@ -84,20 +84,20 @@ export default async function DashboardPage() {
           <CardTitle>Quick Actions</CardTitle>
           <CardDescription>Get started with common tasks</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-4">
-          <Button asChild>
+        <CardContent className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
+          <Button asChild size="sm" className="sm:size-default">
             <Link href="/dashboard/inquiries/new">
               <Plus className="mr-2 h-4 w-4" />
               Create Inquiry
             </Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild size="sm" className="sm:size-default">
             <Link href="/dashboard/suppliers">
               <Users className="mr-2 h-4 w-4" />
               Manage Suppliers
             </Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild size="sm" className="sm:size-default">
             <Link href="/dashboard/inquiries">
               <FileText className="mr-2 h-4 w-4" />
               View Inquiries
